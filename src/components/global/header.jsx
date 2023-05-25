@@ -15,12 +15,17 @@ export default function Header() {
 
     return (
         <AppBar>
-            <Toolbar variant="dense">
+            <Toolbar
+                variant="dense"
+            >
                 <Typography
                     variant="h6"
-                    mr={2}
+                    noWrap
+                    pr={2}
                     sx={{ display: "inline" }}
-                >Delivery app</Typography>
+                >
+                    Delivery app
+                </Typography>
                 <Tabs
                     sx={{ flexGrow: 1 }}
                     value={value}
@@ -31,7 +36,7 @@ export default function Header() {
                     <Tab
                         sx={{ minHeight: "inherit" }}
                         icon={<MenuIcon />}
-                        label="Shops"
+                        label="Shop"
                         iconPosition="start"
                         index={0}
                         component={Link}
@@ -40,7 +45,7 @@ export default function Header() {
                     <Tab
                         sx={{ minHeight: "inherit" }}
                         icon={<ShoppingCartIcon />}
-                        label="Shops"
+                        label="Shopping Cart"
                         iconPosition="start"
                         index={1}
                         component={Link}
