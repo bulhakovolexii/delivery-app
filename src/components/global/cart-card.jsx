@@ -8,17 +8,27 @@ import {
     TextField,
 } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
+import { useState } from "react";
 
-export default function CartCard({ good }) {
+export default function CartCard({ good, removeGoodFromCart, setPiecesOfGood }) {
+    const [pieces, setPieces] = useState(good.pieces)
+    const handleSetPieces = (value) => {
+        setPieces(value);
+        setPiecesOfGood(good, value)
+    }
     return (
         <Card
-            elevation={0}
-            sx={{ display: "flex" }}
+            variant="outlined"
+            sx={{
+                display: "flex",
+                flexShrink: 0
+            }}
         >
             <CardMedia
                 sx={{
-                    flexGrow: 2,
+                    flexShrink: 0,
                     height: 150,
+                    minWidth: 150,
                 }}
                 image={good.img}
             />
@@ -26,7 +36,9 @@ export default function CartCard({ good }) {
                 <CardHeader
                     title={good.name}
                     action={
-                        <IconButton>
+                        <IconButton
+                            onClick={() => removeGoodFromCart(good)}
+                        >
                             <CloseIcon />
                         </IconButton>
                     }
@@ -42,6 +54,8 @@ export default function CartCard({ good }) {
                         label="Pieces"
                         variant="standard"
                         type="number"
+                        value={pieces}
+                        onChange={(e) => e.target.value >= 1 && handleSetPieces(+e.target.value)}
                     />
                 </CardActions>
             </Box>

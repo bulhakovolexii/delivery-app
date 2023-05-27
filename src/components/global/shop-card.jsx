@@ -7,12 +7,16 @@ import {
     Typography
 } from "@mui/material";
 
-export default function ShopCard({ shop, good }) {
+import DoneIcon from '@mui/icons-material/Done';
+
+export default function ShopCard({ shop, good, addGoodInCart }) {
     return (
         <Card
-            elevation={0}
+            variant="outlined"
             sx={{
-                width: "calc(50% - 8px)",
+                width: { xs: "100%", sm: "calc(50% - 14px)" },
+                display: "flex",
+                flexDirection: "column"
             }}>
             <CardMedia
                 sx={{
@@ -34,11 +38,24 @@ export default function ShopCard({ shop, good }) {
             <CardActions
                 sx={{
                     justifyContent: "flex-end",
+                    alignItems: "flex-end",
+                    flexGrow: 1,
                     padding: "0 16px 16px 16px",
                 }}
             >
-                <Button variant="contained">
-                    Add to Cart
+                <Button
+                    variant="contained"
+                    disabled={good.isInCart}
+                    onClick={() => addGoodInCart(good)}
+                    startIcon={good.isInCart ? <DoneIcon /> : ""}
+                    sx={{
+                        "&.Mui-disabled": {
+                            bgcolor: "#2e7d32",
+                            color: "#fff"
+                        }
+                    }}
+                >
+                    {good.isInCart ? "In Cart" : "Add to Cart"}
                 </Button>
             </CardActions>
         </Card>

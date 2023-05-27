@@ -9,13 +9,14 @@ import {
     Paper,
     Typography
 } from "@mui/material";
+import { useEffect, useState } from "react";
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import ShopCard from "../components/global/shop-card";
-import { shops } from "../data"
 
-function Shop({ shop }) {
+function Shop({ shop, handleFilterGoods }) {
     return (
         <ListItem>
-            <ListItemButton>
+            <ListItemButton onClick={() => handleFilterGoods(shop.name)}>
                 <ListItemText
                     primary={shop.name}
                 />
@@ -31,7 +32,18 @@ function Shop({ shop }) {
     )
 }
 
-export default function Main() {
+export default function Main({ addGoodInCart, shops, goods }) {
+    const [filteredGoods, setFilteredGoods] = useState(goods);
+    const handleFilterGoods = (shop) => {
+        setFilteredGoods(
+            goods.filter(good => good.shop === shop)
+        )
+    }
+
+    useEffect(() => {
+        setFilteredGoods(goods);
+    }, [goods])
+
     return (
         <Box
             mt={2}
@@ -40,7 +52,7 @@ export default function Main() {
             gridTemplateColumns="repeat(12, 1fr)"
             gap="24px"
         >
-            <Box sx={{ gridColumn: "span 3" }}>
+            <Box sx={{ gridColumn: { xs: "span 12", md: "span 3" } }}>
                 <Paper elevation={5}>
                     <Typography
                         p={1}
@@ -50,21 +62,41 @@ export default function Main() {
                         Shops:
                     </Typography>
                     <List dense>
-                        {shops.map(shop => <Shop shop={shop} key={shop.name} />)}
+                        <ListItem>
+                            <ListItemButton onClick={() => setFilteredGoods(goods)}>
+                                <ListItemText
+                                    primary="All shops"
+                                />
+                                <ListItemAvatar
+                                    sx={{ minWidth: "unset" }}
+                                >
+                                    <Avatar>
+                                        <ShoppingBagIcon />
+                                    </Avatar>
+                                </ListItemAvatar>
+                            </ListItemButton>
+                        </ListItem>
+                        {shops.map(shop =>
+                            <Shop
+                                shop={shop}
+                                key={shop.id}
+                                handleFilterGoods={handleFilterGoods}
+                            />)}
                     </List>
                 </Paper >
             </Box>
             <Box sx={{
-                gridColumn: "span 9",
+                gridColumn: { xs: "span 12", md: "span 9" },
                 height: "100%"
             }}>
                 <Paper elevation={5} sx={{
-                    height: "calc(100vh - 80px)",
+                    height: { md: "calc(100vh - 80px)" },
                     overflow: "hidden",
                 }}>
                     <Box
                         height="100%"
                         display="flex"
+                        alignContent="flex-start"
                         flexWrap="wrap"
                         gap={2}
                         p={2}
@@ -73,7 +105,12 @@ export default function Main() {
                             overflowY: "auto"
                         }}
                     >
-                        {shops[0].goods.map(good => <ShopCard good={good} shop={shops[0].name} key={good.name} />)}
+                        {filteredGoods.map(good =>
+                            <ShopCard
+                                addGoodInCart={addGoodInCart}
+                                good={good}
+                                shop={good.shop}
+                                key={good.id} />)}
                     </Box>
                 </Paper >
             </Box>
