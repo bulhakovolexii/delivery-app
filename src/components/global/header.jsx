@@ -22,7 +22,7 @@ export default function Header() {
                     variant="h6"
                     noWrap
                     pr={2}
-                    sx={{ display: "inline" }}
+                    sx={{ display: { xs: "none", sm: "inline" } }}
                 >
                     Delivery app
                 </Typography>

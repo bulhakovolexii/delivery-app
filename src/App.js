@@ -48,7 +48,6 @@ export default function App() {
           ? { ...item, isInCart: false }
           : item))
     )
-    console.log(goods)
   }
   const setPiecesOfGood = (good, value) => {
     setCart(
