@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import { Container, Toolbar } from "@mui/material";
 import { useEffect, useState } from "react";
 import { db } from "./firebase"
-import { collection, collectionGroup, getDocs } from "firebase/firestore";
+import { addDoc, collection, collectionGroup, getDocs } from "firebase/firestore";
 import Header from "./components/global/header";
 import Main from "./pages/main";
 import Cart from "./pages/cart";
@@ -28,6 +28,22 @@ export default function App() {
           .map((doc) => ({ ...doc.data(), id: doc.id, shop: doc.ref.parent.parent.id }));
         setGoods(newData);
       })
+  }
+
+  const postOrder = async (clientData, cart) => {
+    await addDoc(collection(db, "orders"), {
+      clientData,
+      cart: cart.map(good => ({
+        id: good.id,
+        name: good.name,
+        shop: good.shop,
+        pieces: good.pieces,
+      }))
+    })
+    setCart([]);
+    setGoods(goods.map(good => (
+      { ...good, isInCart: false }
+    )))
   }
 
   useEffect(() => {
@@ -59,7 +75,7 @@ export default function App() {
   }
   return (
     <div className="app">
-      <Header />
+      <Header cart={cart} />
       <main className="content">
         <Toolbar variant="dense" />
         <Container sx={{ height: "calc(100% - 80px)" }}>
@@ -68,7 +84,12 @@ export default function App() {
               <Main addGoodInCart={addGoodInCart} shops={shops} goods={goods} />
             } />
             <Route path="/delivery-app/cart" element={
-              <Cart cart={cart} removeGoodFromCart={removeGoodFromCart} setPiecesOfGood={setPiecesOfGood} />
+              <Cart
+                cart={cart}
+                removeGoodFromCart={removeGoodFromCart}
+                setPiecesOfGood={setPiecesOfGood}
+                postOrder={postOrder}
+              />
             } />
           </Routes>
         </Container>

@@ -1,4 +1,4 @@
-import { AppBar, IconButton, Tab, Tabs, Toolbar, Typography } from "@mui/material";
+import { AppBar, Badge, IconButton, Tab, Tabs, Toolbar, Typography } from "@mui/material";
 
 import SearchIcon from '@mui/icons-material/Search';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -6,7 +6,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function Header() {
+export default function Header({ cart }) {
     const [value, setValue] = useState(0);
 
     const handleChange = (event, newValue) => {
@@ -44,7 +44,19 @@ export default function Header() {
                     />
                     <Tab
                         sx={{ minHeight: "inherit" }}
-                        icon={<ShoppingCartIcon />}
+                        icon={
+                            <Badge
+                                badgeContent={cart.length}
+                                color="secondary"
+                                overlap="circular"
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'right',
+                                }}
+                            >
+                                <ShoppingCartIcon />
+                            </Badge>
+                        }
                         label="Shopping Cart"
                         iconPosition="start"
                         index={1}

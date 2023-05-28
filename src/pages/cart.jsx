@@ -1,23 +1,12 @@
 import {
     Box,
-    Button,
     Paper,
-    TextField,
-    Typography
 } from "@mui/material";
 
-import CartCard from "../components/global/cart-card";
-import { useEffect, useState } from "react";
+import CartCard from "../components/cart-card";
+import OrderForm from "../components/order-form";
 
-export default function Cart({ cart, removeGoodFromCart, setPiecesOfGood }) {
-    const [sumOfCart, setSumOfCart] = useState(0);
-
-    useEffect(() => {
-        let sum = 0;
-        cart.forEach((good) => { sum += good.pieces * good.price });
-        setSumOfCart(sum.toFixed(2));
-    }, [cart])
-
+export default function Cart({ cart, removeGoodFromCart, setPiecesOfGood, postOrder, setCart }) {
     return (
         < Box
             mt={2}
@@ -31,7 +20,7 @@ export default function Cart({ cart, removeGoodFromCart, setPiecesOfGood }) {
                 height: "100%"
             }}>
                 <Paper elevation={5} sx={{
-                    height: "calc(100vh - 80px)",
+                    height: { md: "calc(100vh - 80px)" },
                     overflow: "hidden",
                 }}>
                     <Box
@@ -56,35 +45,10 @@ export default function Cart({ cart, removeGoodFromCart, setPiecesOfGood }) {
                     </Box>
                 </Paper >
             </Box>
-            <Box sx={{
-                gridColumn: { xs: "span 12", md: "span 6" },
-            }}>
-                <Paper elevation={5}>
-                    <Box
-                        display="flex"
-                        flexDirection="column"
-                        p={4}
-                        gap={5}
-                    >
-                        <TextField label="Name:" type="text" variant="standard" />
-                        <TextField label="Email:" type="email" variant="standard" />
-                        <TextField label="Phone:" type="tel" variant="standard" />
-                        <TextField label="Address:" type="text" variant="standard" />
-                    </Box>
-                    <Box
-                        display="flex"
-                        flexDirection="column"
-                        sx={{ padding: "16px 32px" }}
-                        gap={3}
-                    >
-                        <Box display="flex" justifyContent="space-between">
-                            <Typography variant="h5">Total price:</Typography>
-                            <Typography variant="h5">{"$" + sumOfCart}</Typography>
-                        </Box>
-                        <Button variant="contained" size="large">Submit</Button>
-                    </Box>
-                </Paper >
-            </Box >
+            <OrderForm
+                cart={cart}
+                postOrder={postOrder}
+            />
         </Box >
     )
 }

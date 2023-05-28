@@ -28,7 +28,7 @@ export default function CartCard({ good, removeGoodFromCart, setPiecesOfGood }) 
                 sx={{
                     flexShrink: 0,
                     height: 150,
-                    minWidth: 150,
+                    minWidth: "33%",
                 }}
                 image={good.img}
             />

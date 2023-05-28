@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
-import ShopCard from "../components/global/shop-card";
+import ShopCard from "../components/shop-card";
 
 function Shop({ shop, handleFilterGoods }) {
     return (
