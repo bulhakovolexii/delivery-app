@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import { Container, Toolbar } from "@mui/material";
 import { useEffect, useState } from "react";
 import { db } from "./firebase"
-import { addDoc, collection, collectionGroup, getDocs } from "firebase/firestore";
+import { addDoc, collection, collectionGroup, getDocs, Timestamp } from "firebase/firestore";
 import Header from "./components/global/header";
 import Main from "./pages/main";
 import Cart from "./pages/cart";
@@ -33,6 +33,7 @@ export default function App() {
   const postOrder = async (clientData, cart) => {
     await addDoc(collection(db, "orders"), {
       clientData,
+      time: Timestamp.now(),
       cart: cart.map(good => ({
         id: good.id,
         name: good.name,
@@ -73,6 +74,7 @@ export default function App() {
           : item))
     )
   }
+
   return (
     <div className="app">
       <Header cart={cart} />
