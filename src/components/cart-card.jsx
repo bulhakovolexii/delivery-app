@@ -55,7 +55,11 @@ export default function CartCard({ good, removeGoodFromCart, setPiecesOfGood }) 
                         variant="standard"
                         type="number"
                         value={pieces}
-                        onChange={(e) => e.target.value >= 1 && handleSetPieces(+e.target.value)}
+                        InputProps={{
+                            inputProps: { min: 1 }
+                        }}
+                        onChange={(e) => handleSetPieces(e.target.value)}
+                        onBlur={(e) => { if (e.target.value === "") { handleSetPieces(1) } }}
                     />
                 </CardActions>
             </Box>

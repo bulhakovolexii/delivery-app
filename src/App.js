@@ -67,6 +67,7 @@ export default function App() {
     )
   }
   const setPiecesOfGood = (good, value) => {
+    value = value === "" ? 1 : +value
     setCart(
       cart.map(item => (
         item.name === good.name
