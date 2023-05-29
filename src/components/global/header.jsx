@@ -40,7 +40,7 @@ export default function Header({ cart }) {
                         iconPosition="start"
                         index={0}
                         component={Link}
-                        to={"/delivery-app/"}
+                        to={"/"}
                     />
                     <Tab
                         sx={{ minHeight: "inherit" }}
@@ -61,7 +61,7 @@ export default function Header({ cart }) {
                         iconPosition="start"
                         index={1}
                         component={Link}
-                        to={"/delivery-app/cart"}
+                        to={"/cart"}
                     />
                 </Tabs>
                 <IconButton

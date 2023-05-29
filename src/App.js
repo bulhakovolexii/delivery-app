@@ -83,10 +83,10 @@ export default function App() {
         <Toolbar variant="dense" />
         <Container sx={{ height: "calc(100% - 80px)" }}>
           <Routes>
-            <Route path="/delivery-app/" element={
+            <Route path="/" element={
               <Main addGoodInCart={addGoodInCart} shops={shops} goods={goods} />
             } />
-            <Route path="/delivery-app/cart" element={
+            <Route path="/cart" element={
               <Cart
                 cart={cart}
                 removeGoodFromCart={removeGoodFromCart}
