@@ -3,7 +3,7 @@
 Web application where users can order food delivery
 
 Published on github pages.
-[demo](https://bulhakovolexii.github.io/delivery-app)
+[https://bulhakov.dev/delivery-app](https://bulhakovolexii.github.io/delivery-app)
 
 ## Dependencies
  - React bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
