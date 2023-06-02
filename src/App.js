@@ -1,8 +1,11 @@
-import { Route, Routes } from "react-router-dom";
-import { Container, Toolbar } from "@mui/material";
 import { useEffect, useState } from "react";
+import { Route, Routes } from "react-router-dom";
+
 import { db } from "./firebase"
 import { addDoc, collection, collectionGroup, getDocs, Timestamp } from "firebase/firestore";
+
+import { Container, Toolbar } from "@mui/material";
+
 import Header from "./components/global/header";
 import Main from "./pages/main";
 import Cart from "./pages/cart";
@@ -25,26 +28,17 @@ export default function App() {
     await getDocs(collectionGroup(db, "goods"))
       .then((querySnapshot) => {
         const newData = querySnapshot.docs
-          .map((doc) => ({ ...doc.data(), id: doc.id, shop: doc.ref.parent.parent.id }));
+          .map((doc) => ({ ...doc.data(), id: doc.id, shop: doc.ref.parent.parent.id }))
+          .sort((a, b) => {
+            const nameA = a.name.toLowerCase(), nameB = b.name.toLowerCase()
+            if (nameA < nameB)
+              return -1
+            if (nameA > nameB)
+              return 1
+            return 0
+          });
         setGoods(newData);
       })
-  }
-
-  const postOrder = async (clientData, cart) => {
-    await addDoc(collection(db, "orders"), {
-      clientData,
-      time: Timestamp.now(),
-      cart: cart.map(good => ({
-        id: good.id,
-        name: good.name,
-        shop: good.shop,
-        pieces: good.pieces,
-      }))
-    })
-    setCart([]);
-    setGoods(goods.map(good => (
-      { ...good, isInCart: false }
-    )))
   }
 
   useEffect(() => {
@@ -52,11 +46,29 @@ export default function App() {
     fetchGoods();
   }, [])
 
+  const postOrder = async (clientData, cart) => {
+    await addDoc(collection(db, "orders"), {
+      clientData,
+      cart: cart.map(good => ({
+        id: good.id,
+        name: good.name,
+        shop: good.shop,
+        pieces: good.pieces,
+      })),
+      time: Timestamp.now(),
+    })
+    setCart([]);
+    setGoods(goods.map(good => (
+      { ...good, isInCart: false }
+    )))
+  }
+
   const addGoodInCart = (good) => {
     setCart(cart => [...cart, good]);
     good.isInCart = true;
     good.pieces = 1;
   }
+
   const removeGoodFromCart = (good) => {
     setCart(cart.filter(item => (item.name !== good.name)))
     setGoods(
@@ -66,6 +78,7 @@ export default function App() {
           : item))
     )
   }
+
   const setPiecesOfGood = (good, value) => {
     value = value === "" ? 1 : +value
     setCart(

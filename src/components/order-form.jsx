@@ -1,7 +1,9 @@
 import { Alert, Box, Button, Paper, Snackbar, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useFormik } from "formik";
+import { useJsApiLoader } from "@react-google-maps/api"
 import * as yup from "yup";
+import Map from "./map";
 
 const validationSchema = yup.object({
     name: yup
@@ -57,11 +59,28 @@ export default function OrderForm({ cart, postOrder }) {
         setSucces(!succes);
     }
 
+    const { isLoaded } = useJsApiLoader({
+        id: 'google-map-script',
+        googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+    })
+
     return (
         <Box sx={{
             gridColumn: { xs: "span 12", md: "span 6" },
         }}>
-            <Paper elevation={5}>
+            <Paper elevation={5}
+                sx={{
+                    height: { md: "calc(100vh - 80px)" },
+                    overflowY: "auto",
+                }}
+            >
+                <Map
+                    center={{
+                        lat: -3.745,
+                        lng: -38.523
+                    }}
+                    isLoaded={isLoaded}
+                />
                 <form onSubmit={formik.handleSubmit}>
                     <Box
                         display="flex"
@@ -69,6 +88,17 @@ export default function OrderForm({ cart, postOrder }) {
                         p={4}
                         gap={5}
                     >
+                        <TextField
+                            label="Address:"
+                            type="text"
+                            variant="standard"
+                            id="address"
+                            name="address"
+                            value={formik.values.address}
+                            onChange={formik.handleChange}
+                            error={formik.touched.address && Boolean(formik.errors.address)}
+                            helperText={formik.touched.address && formik.errors.address}
+                        />
                         <TextField
                             label="Name:"
                             type="text"
@@ -101,17 +131,6 @@ export default function OrderForm({ cart, postOrder }) {
                             onChange={formik.handleChange}
                             error={formik.touched.phone && Boolean(formik.errors.phone)}
                             helperText={formik.touched.phone && formik.errors.phone}
-                        />
-                        <TextField
-                            label="Address:"
-                            type="text"
-                            variant="standard"
-                            id="address"
-                            name="address"
-                            value={formik.values.address}
-                            onChange={formik.handleChange}
-                            error={formik.touched.address && Boolean(formik.errors.address)}
-                            helperText={formik.touched.address && formik.errors.address}
                         />
                     </Box>
                     <Box

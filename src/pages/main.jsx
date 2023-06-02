@@ -1,38 +1,12 @@
-import {
-    Avatar,
-    Box,
-    List,
-    ListItem,
-    ListItemAvatar,
-    ListItemButton,
-    ListItemText,
-    Paper,
-    Typography
-} from "@mui/material";
 import { useEffect, useState } from "react";
-import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
+
+import { Box, Paper, Typography } from "@mui/material";
+
 import ShopCard from "../components/shop-card";
+import Shoplist from "../components/shop-list";
 
-function Shop({ shop, handleFilterGoods }) {
-    return (
-        <ListItem>
-            <ListItemButton onClick={() => handleFilterGoods(shop.name)}>
-                <ListItemText
-                    primary={shop.name}
-                />
-                <ListItemAvatar
-                    sx={{ minWidth: "unset" }}
-                >
-                    <Avatar
-                        src={shop.logo}
-                    />
-                </ListItemAvatar>
-            </ListItemButton>
-        </ListItem>
-    )
-}
 
-export default function Main({ addGoodInCart, shops, goods }) {
+export default function Main({ addGoodInCart, selectShop, shops, goods }) {
     const [filteredGoods, setFilteredGoods] = useState(goods);
     const handleFilterGoods = (shop) => {
         setFilteredGoods(
@@ -61,28 +35,13 @@ export default function Main({ addGoodInCart, shops, goods }) {
                     >
                         Shops:
                     </Typography>
-                    <List dense>
-                        <ListItem>
-                            <ListItemButton onClick={() => setFilteredGoods(goods)}>
-                                <ListItemText
-                                    primary="All shops"
-                                />
-                                <ListItemAvatar
-                                    sx={{ minWidth: "unset" }}
-                                >
-                                    <Avatar>
-                                        <ShoppingBagIcon />
-                                    </Avatar>
-                                </ListItemAvatar>
-                            </ListItemButton>
-                        </ListItem>
-                        {shops.map(shop =>
-                            <Shop
-                                shop={shop}
-                                key={shop.id}
-                                handleFilterGoods={handleFilterGoods}
-                            />)}
-                    </List>
+                    <Shoplist
+                        shops={shops}
+                        goods={goods}
+                        handleFilterGoods={handleFilterGoods}
+                        setFilteredGoods={setFilteredGoods}
+                        selectShop={selectShop}
+                    />
                 </Paper >
             </Box>
             <Box sx={{
